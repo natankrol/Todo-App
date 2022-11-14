@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Aldrich&family=Poppins:wght@500&display=swap');
+:root {
+    --red: #dc4c3e;
+}
+html{
+    font-family: 'Aldrich', sans-serif;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    box-sizing: border-box;
+    margin: 0;
+
+}
+.content{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    
+}
+.left-side{
+    border: 1px solid red;
+    flex-basis: 20%;
+}
+.right-side{
+    border: 1px solid blue;
+    flex-basis: 80%;
+}
+.todo-form-container{
+    width: 25rem;
+    height: 25rem;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 8px 8px 30px -7px rgba(66, 68, 90, 1);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -5rem;
+}
+.todo-form-container-hidden{
+    display: none;
+}
+.todo-form{
+    display: flex;
+    flex-direction: column;
+}
+.todo-form input{
+    height: 2rem;
+    border-radius: 5px;
+    border: 1px solid rgb(132, 132, 132);
+}
+.todo-form label{
+    text-align: center;
+    padding-top: 1rem;
+}
+.submit-btn{
+    margin-top: 1rem;
+    background-color: var(--red);
+    color: white;
+    border: none !important;
+    height: 2.5rem !important;
+    margin-top: 2rem;
+}
+.priority-select{
+    height: 2rem;
+    border-radius: 5px;
+    border: 1px solid rgb(132, 132, 132);
+}
+.close-form-btn{
+    width: 2rem;
+    height: 2rem;
+    display: block;
+    align-self: end;
+    border: none;
+    cursor: pointer;
+}
+.list-item{
+    width: 25rem;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+}
