@@ -14,8 +14,7 @@ let list = [];
 
 
 const  todoFormContainer = document.createElement('div');
-        todoFormContainer.classList.add('todo-form-container');
-        todoFormContainer.classList.add('todo-form-container-hidden');
+        todoFormContainer.classList.add('todo-form-container', 'todo-form-container-hidden');
 
         rightSide.appendChild(todoFormContainer);
         todoFormContainer.innerHTML = '<form class="todo-form"><button type="button" class="close-form-btn">X</button><label for="title">Title:</label><input type="text" id="title" required><label for="description">Description:</label><input type="text" id="description" required><label for="dueDate">Due Date:</label><input type="date" id="duedate" required></label><label for="priority">Priority:</label><select id="priority" class="priority-select"><option id="normal" value="Normal Priority">Normal</option><option id ="high" value="High Priority">High Priority</option></select><input type="submit" class="submit-btn"></form>';
@@ -59,8 +58,12 @@ newTodoBtn.addEventListener('click', function(){
         let newTaskPriority = newTask.priority;
         let newTaskId = newTask.Id;
 
+        // createList(list)
 
-        mainSectionList.innerHTML += `<li class="list-item" id=${newTaskId}><h1 class="task-title">${newTaskTitle}</h1><p class="task-description">${newTaskDescription}</p><p class ="due-date">${newTaskDueDate}</p><p class="task-priority">${newTaskPriority}</p></li>`
+
+        // mainSectionList.innerHTML += `<li class="list-item" id=${newTaskId}><h1 class="task-title">${newTaskTitle}</h1><p class="task-description">${newTaskDescription}</p><p class ="due-date">${newTaskDueDate}</p><p class="task-priority">${newTaskPriority}</p></li>`;
+
+        addingNewTask(list);
 
 
         list.forEach((item, i) => {
@@ -71,9 +74,6 @@ newTodoBtn.addEventListener('click', function(){
         console.log(list);
 
     })
-
-    
-
 
 
     // close form
@@ -108,25 +108,64 @@ normalPriorityButton.addEventListener('click', function(){
             return el
         }
     })
-    console.log(normalPriorityTasks);
+
+    mainSectionList.innerHTML = '';
+
+    
+    createList(normalPriorityTasks);
+    
+})
 
 
+// High priority
 
-    let normalPrioritySection = document.createElement('div');
-    rightSide.removeChild(mainSection);
-    rightSide.appendChild(normalPrioritySection;)
-    normalPrioritySection.classList.add('normal-priority-section');
-    normalPrioritySection.innerHTML = '<ul class="normal-priority-section-list"></ul>';
-    let normalPrioritySectionList = document.querySelector('.normal-priority-section-list');
-    normalPrioritySection.forEach((item) => {
-        let li = document.createElement('li');
-        li.innerText = `<li class="list-item" id=${item.id}><h1 class="task-title">${item.title}</h1><p class="task-description">${item.description}</p><p class ="due-date">${item.dueDate}</p><p class="task-priority">${item.priority}</p></li>`;
-        normalPrioritySectionList.appendChild(li);
-    })
+let highPriorityButton = document.createElement('button');
+highPriorityButton.classList.add('high-priority-button');
+highPriorityButton.innerHTML = 'High Priority';
+leftSide.appendChild(highPriorityButton);
 
+
+highPriorityButton.addEventListener('click', function(){
+    let highPriorityTasks = list.filter(function(el){
+        if (el.priority === "High Priority"){
+            return el
+        }
+    });
+
+    mainSectionList.innerHTML = '';
+
+    
+    createList(highPriorityTasks);
+
+    
 })
 
 
 
+// All tasks
 
+
+
+
+
+
+// creating list with priority
+
+function createList(listName){
+    listName.forEach((item) =>{
+        let li = document.createElement('li');
+        li.classList.add('list-item');
+        li.setAttribute('id', `${item.id}`)
+        li.innerHTML = `<h1 class="task-title">${item.title}</h1><p class="task-description">${item.description}</p><p class ="due-date">${item.dueDate}</p><p class="task-priority">${item.priority}</p>`;
+        mainSectionList.appendChild(li);
+    })
+}
+
+
+// adding new tasks function
+
+function addingNewTask(listName){
+    let lastTask = listName.at(-1)
+    mainSectionList.innerHTML += `<li class="list-item" id=${lastTask.id}><h1 class="task-title">${lastTask.title}</h1><p class="task-description">${lastTask.description}</p><p class ="due-date">${lastTask.dueDate}</p><p class="task-priority">${lastTask.priority}</p></li>`;
+}
 
