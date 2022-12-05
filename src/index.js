@@ -63,15 +63,16 @@ newTodoBtn.addEventListener('click', function(){
 
         // mainSectionList.innerHTML += `<li class="list-item" id=${newTaskId}><h1 class="task-title">${newTaskTitle}</h1><p class="task-description">${newTaskDescription}</p><p class ="due-date">${newTaskDueDate}</p><p class="task-priority">${newTaskPriority}</p></li>`;
 
-        addingNewTask(list);
-
 
         list.forEach((item, i) => {
             item.id = i + 1;
         }
         );
+        addingNewTask(list);
 
-        console.log(list);
+
+        
+
 
     })
 
@@ -144,6 +145,14 @@ highPriorityButton.addEventListener('click', function(){
 
 // All tasks
 
+const allBtn = document.querySelector('.all-btn');
+allBtn.addEventListener('click', function(){
+    mainSectionList.innerHTML = '';
+
+    
+    createList(list);
+})
+
 
 
 
@@ -156,7 +165,7 @@ function createList(listName){
         let li = document.createElement('li');
         li.classList.add('list-item');
         li.setAttribute('id', `${item.id}`)
-        li.innerHTML = `<h1 class="task-title">${item.title}</h1><p class="task-description">${item.description}</p><p class ="due-date">${item.dueDate}</p><p class="task-priority">${item.priority}</p>`;
+        li.innerHTML = `<div class='task-info'><h1 class="task-title">${item.title}</h1><p class="task-description">${item.description}</p><p class ="due-date">${item.dueDate}</p><p class="task-priority">${item.priority}</p></div><div class='task-buttons'><button class='done-btn'>Done</button><button class='delete-btn'>Delete</button></div>`;
         mainSectionList.appendChild(li);
     })
 }
@@ -166,6 +175,49 @@ function createList(listName){
 
 function addingNewTask(listName){
     let lastTask = listName.at(-1)
-    mainSectionList.innerHTML += `<li class="list-item" id=${lastTask.id}><h1 class="task-title">${lastTask.title}</h1><p class="task-description">${lastTask.description}</p><p class ="due-date">${lastTask.dueDate}</p><p class="task-priority">${lastTask.priority}</p></li>`;
-}
+    mainSectionList.innerHTML += `<li class="list-item" id=${lastTask.id}><div class='task-info'><h1 class="task-title">${lastTask.title}</h1><p class="task-description">${lastTask.description}</p><p class ="due-date">${lastTask.dueDate}</p><p class="task-priority">${lastTask.priority}</p></div><div class='task-buttons'><button class='done-btn'>Done</button><button class='delete-btn'>Delete</button></div></li>`;
+};
+
+// Done
+
+document.addEventListener('click', function(e){
+    if(e.target && e.target.classList == 'done-btn'){
+        let listItem = e.target.parentNode.parentNode;
+
+        //test
+        // let doneBtn1 = document.getElementsByClassName('done-btn');
+        // console.log(doneBtn1.parentNode);
+        console.log(e.target.parentNode.parentNode.parentNode);
+
+        for (let i = list.length -1; i >= 0; --i){
+            if (list[i].id == listItem.id) {
+                list.splice(i,1);
+            }
+        };
+        mainSectionList.innerHTML = ''
+        createList(list);
+
+        // if (doneBtn1.parentNode.classList === highPriorityTasks);
+    }
+});
+
+// Delete
+
+document.addEventListener('click', function(e){
+    if(e.target && e.target.classList == 'delete-btn'){
+        let listItem = e.target.parentNode.parentNode;
+
+
+        for (let i = list.length -1; i >= 0; --i){
+            if (list[i].id == listItem.id) {
+                list.splice(i,1);
+            }
+        };
+        mainSectionList.innerHTML = ''
+        createList(list);
+
+        // let doneBtn1 = document.querySelectorAll('done-btn')
+        // if (doneBtn1.parentNode ===)
+    }
+});
 
