@@ -12,6 +12,11 @@ const newTodoBtn = document.querySelector('.new-todo-btn');
 
 let list = [];
 
+//test
+let allItemsList = document.createElement('ul');
+allItemsList.classList.add('all-item-list');
+//
+
 
 const  todoFormContainer = document.createElement('div');
         todoFormContainer.classList.add('todo-form-container', 'todo-form-container-hidden');
@@ -58,7 +63,7 @@ newTodoBtn.addEventListener('click', function(){
         let newTaskPriority = newTask.priority;
         let newTaskId = newTask.Id;
 
-        // createList(list)
+        
 
 
         // mainSectionList.innerHTML += `<li class="list-item" id=${newTaskId}><h1 class="task-title">${newTaskTitle}</h1><p class="task-description">${newTaskDescription}</p><p class ="due-date">${newTaskDueDate}</p><p class="task-priority">${newTaskPriority}</p></li>`;
@@ -68,11 +73,25 @@ newTodoBtn.addEventListener('click', function(){
             item.id = i + 1;
         }
         );
-        addingNewTask(list);
+        // addingNewTask(list);
 
 
+        if(mainSection.firstChild === allItemsList){
+            mainSection.replaceChildren(allItemsList);
+        }else{
+            mainSection.appendChild(allItemsList);
+        };
         
 
+
+
+        //test
+
+        addingNewItem();
+        
+           
+
+            
 
     })
 
@@ -88,9 +107,9 @@ newTodoBtn.addEventListener('click', function(){
 let mainSection = document.createElement('div');
 rightSide.appendChild(mainSection);
 mainSection.classList.add('main-section');
-mainSection.innerHTML = '<ul class="main-section-list"></ul>';
+// mainSection.innerHTML = '<ul class="main-section-list"></ul>';
 
-const mainSectionList = document.querySelector('.main-section-list');
+// const mainSectionList = document.querySelector('.main-section-list');
 
 
 
@@ -110,10 +129,20 @@ normalPriorityButton.addEventListener('click', function(){
         }
     })
 
-    mainSectionList.innerHTML = '';
+    // mainSectionList.innerHTML = '';
+    // mainSectionList.classList.add('hidden-list');
+    mainSection.replaceChildren();
+    
+
+    //test
+    let normalPriorityList = document.createElement('ul');
+    normalPriorityList.classList.add('normal-priority-list');
+    mainSection.appendChild(normalPriorityList);
+    
+    newTodoBtn.classList.add('hidden-btn');
 
     
-    createList(normalPriorityTasks);
+    createList(normalPriorityTasks, normalPriorityList);
     
 })
 
@@ -133,13 +162,24 @@ highPriorityButton.addEventListener('click', function(){
         }
     });
 
-    mainSectionList.innerHTML = '';
+    mainSection.replaceChildren();
 
-    
-    createList(highPriorityTasks);
 
+    //test
+    let highPriorityList = document.createElement('ul');
+    highPriorityList.classList.add('high-priority-list');
+    mainSection.appendChild(highPriorityList);
     
-})
+    newTodoBtn.classList.add('hidden-btn');
+
+
+    createList(highPriorityTasks, highPriorityList);
+
+
+    // end of test
+
+    //createList(highPriorityTasks);
+});
 
 
 
@@ -147,10 +187,9 @@ highPriorityButton.addEventListener('click', function(){
 
 const allBtn = document.querySelector('.all-btn');
 allBtn.addEventListener('click', function(){
-    mainSectionList.innerHTML = '';
-
-    
-    createList(list);
+    mainSection.replaceChildren();
+    mainSection.appendChild(allItemsList);
+    newTodoBtn.classList.remove('hidden-list');
 })
 
 
@@ -160,13 +199,13 @@ allBtn.addEventListener('click', function(){
 
 // creating list with priority
 
-function createList(listName){
+function createList(listName, priorityListName){
     listName.forEach((item) =>{
         let li = document.createElement('li');
         li.classList.add('list-item');
         li.setAttribute('id', `${item.id}`)
         li.innerHTML = `<div class='task-info'><h1 class="task-title">${item.title}</h1><p class="task-description">${item.description}</p><p class ="due-date">${item.dueDate}</p><p class="task-priority">${item.priority}</p></div><div class='task-buttons'><button class='done-btn'>Done</button><button class='delete-btn'>Delete</button></div>`;
-        mainSectionList.appendChild(li);
+        priorityListName.appendChild(li);
     })
 }
 
@@ -194,10 +233,10 @@ document.addEventListener('click', function(e){
                 list.splice(i,1);
             }
         };
-        mainSectionList.innerHTML = ''
-        createList(list);
+        // mainSectionList.innerHTML = ''
+        // createList(list);
 
-        // if (doneBtn1.parentNode.classList === highPriorityTasks);
+        
     }
 });
 
@@ -221,3 +260,15 @@ document.addEventListener('click', function(e){
     }
 });
 
+
+// Adding new items
+
+function addingNewItem(){
+    let lastItem = list[list.length - 1];
+
+    let li = document.createElement('li');
+    li.classList.add('list-item');
+    li.setAttribute('id', `${lastItem.id}`);
+    li.innerHTML = `<div class='task-info'><h1 class="task-title">${lastItem.title}</h1><p class="task-description">${lastItem.description}</p><p class ="due-date">${lastItem.dueDate}</p><p class="task-priority">${lastItem.priority}</p></div><div class='task-buttons'><button class='done-btn'>Done</button><button class='delete-btn'>Delete</button></div>`;
+    allItemsList.appendChild(li);
+}
