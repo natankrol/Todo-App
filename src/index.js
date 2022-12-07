@@ -57,42 +57,24 @@ newTodoBtn.addEventListener('click', function(){
         e.stopImmediatePropagation();
         todoForm.reset();
 
-        let newTaskTitle = newTask.title;
-        let newTaskDescription = newTask.description;
-        let newTaskDueDate = newTask.dueDate;
-        let newTaskPriority = newTask.priority;
-        let newTaskId = newTask.Id;
 
         
 
-
-        // mainSectionList.innerHTML += `<li class="list-item" id=${newTaskId}><h1 class="task-title">${newTaskTitle}</h1><p class="task-description">${newTaskDescription}</p><p class ="due-date">${newTaskDueDate}</p><p class="task-priority">${newTaskPriority}</p></li>`;
 
 
         list.forEach((item, i) => {
             item.id = i + 1;
         }
         );
-        // addingNewTask(list);
 
+        mainSection.replaceChildren();
 
-        if(mainSection.firstChild === allItemsList){
-            mainSection.replaceChildren(allItemsList);
-        }else{
-            mainSection.appendChild(allItemsList);
-        };
+        let allBtnPriorityList = document.createElement('ul');
+        allBtnPriorityList.classList.add('all-btn-priority-list');
+        mainSection.appendChild(allBtnPriorityList);
+        newTodoBtn.classList.remove('hidden-btn');
         
-
-
-
-        //test
-
-        addingNewItem();
-        
-           
-
-            
-
+        createList(list, allBtnPriorityList);
     })
 
 
@@ -107,9 +89,6 @@ newTodoBtn.addEventListener('click', function(){
 let mainSection = document.createElement('div');
 rightSide.appendChild(mainSection);
 mainSection.classList.add('main-section');
-// mainSection.innerHTML = '<ul class="main-section-list"></ul>';
-
-// const mainSectionList = document.querySelector('.main-section-list');
 
 
 
@@ -122,29 +101,8 @@ normalPriorityButton.classList.add('normal-priority-button');
 normalPriorityButton.innerHTML = 'Normal Priority';
 leftSide.appendChild(normalPriorityButton);
 
-normalPriorityButton.addEventListener('click', function(){
-    let normalPriorityTasks = list.filter(function(el){
-        if (el.priority === "Normal Priority"){
-            return el
-        }
-    })
 
-    // mainSectionList.innerHTML = '';
-    // mainSectionList.classList.add('hidden-list');
-    mainSection.replaceChildren();
-    
-
-    //test
-    let normalPriorityList = document.createElement('ul');
-    normalPriorityList.classList.add('normal-priority-list');
-    mainSection.appendChild(normalPriorityList);
-    
-    newTodoBtn.classList.add('hidden-btn');
-
-    
-    createList(normalPriorityTasks, normalPriorityList);
-    
-})
+normalPriorityButton.addEventListener('click', normalPriorityBtnFunction);
 
 
 // High priority
@@ -155,31 +113,7 @@ highPriorityButton.innerHTML = 'High Priority';
 leftSide.appendChild(highPriorityButton);
 
 
-highPriorityButton.addEventListener('click', function(){
-    let highPriorityTasks = list.filter(function(el){
-        if (el.priority === "High Priority"){
-            return el
-        }
-    });
-
-    mainSection.replaceChildren();
-
-
-    //test
-    let highPriorityList = document.createElement('ul');
-    highPriorityList.classList.add('high-priority-list');
-    mainSection.appendChild(highPriorityList);
-    
-    newTodoBtn.classList.add('hidden-btn');
-
-
-    createList(highPriorityTasks, highPriorityList);
-
-
-    // end of test
-
-    //createList(highPriorityTasks);
-});
+highPriorityButton.addEventListener('click', highPriorityBtnFunction);
 
 
 
@@ -187,9 +121,15 @@ highPriorityButton.addEventListener('click', function(){
 
 const allBtn = document.querySelector('.all-btn');
 allBtn.addEventListener('click', function(){
+
     mainSection.replaceChildren();
-    mainSection.appendChild(allItemsList);
-    newTodoBtn.classList.remove('hidden-list');
+
+    let allBtnPriorityList = document.createElement('ul');
+    allBtnPriorityList.classList.add('all-btn-priority-list');
+    mainSection.appendChild(allBtnPriorityList);
+    newTodoBtn.classList.remove('hidden-btn');
+    
+    createList(list, allBtnPriorityList);
 })
 
 
@@ -210,12 +150,8 @@ function createList(listName, priorityListName){
 }
 
 
-// adding new tasks function
 
-function addingNewTask(listName){
-    let lastTask = listName.at(-1)
-    mainSectionList.innerHTML += `<li class="list-item" id=${lastTask.id}><div class='task-info'><h1 class="task-title">${lastTask.title}</h1><p class="task-description">${lastTask.description}</p><p class ="due-date">${lastTask.dueDate}</p><p class="task-priority">${lastTask.priority}</p></div><div class='task-buttons'><button class='done-btn'>Done</button><button class='delete-btn'>Delete</button></div></li>`;
-};
+
 
 // Done
 
@@ -223,20 +159,28 @@ document.addEventListener('click', function(e){
     if(e.target && e.target.classList == 'done-btn'){
         let listItem = e.target.parentNode.parentNode;
 
-        //test
-        // let doneBtn1 = document.getElementsByClassName('done-btn');
-        // console.log(doneBtn1.parentNode);
-        console.log(e.target.parentNode.parentNode.parentNode);
+
+        console.log(e.target.parentNode.parentNode.parentNode.classList.value);
+
+        
 
         for (let i = list.length -1; i >= 0; --i){
             if (list[i].id == listItem.id) {
                 list.splice(i,1);
             }
         };
-        // mainSectionList.innerHTML = ''
-        // createList(list);
 
-        
+
+        let priorityListName = e.target.parentNode.parentNode.parentNode.classList.value;
+
+        if (priorityListName === 'normal-priority-list'){
+            normalPriorityBtnFunction();
+            console.log(list);  
+        }else if(priorityListName === 'high-priority-list'){
+            highPriorityBtnFunction();
+        }else if(priorityListName === 'all-btn-priority-list'){
+            allBtnFunction();
+        };  
     }
 });
 
@@ -254,9 +198,6 @@ document.addEventListener('click', function(e){
         };
         mainSectionList.innerHTML = ''
         createList(list);
-
-        // let doneBtn1 = document.querySelectorAll('done-btn')
-        // if (doneBtn1.parentNode ===)
     }
 });
 
@@ -271,4 +212,62 @@ function addingNewItem(){
     li.setAttribute('id', `${lastItem.id}`);
     li.innerHTML = `<div class='task-info'><h1 class="task-title">${lastItem.title}</h1><p class="task-description">${lastItem.description}</p><p class ="due-date">${lastItem.dueDate}</p><p class="task-priority">${lastItem.priority}</p></div><div class='task-buttons'><button class='done-btn'>Done</button><button class='delete-btn'>Delete</button></div>`;
     allItemsList.appendChild(li);
+}       
+
+
+
+// normal priority button function
+
+
+ function normalPriorityBtnFunction(){
+    let normalPriorityTasks = list.filter(function(el){
+        if (el.priority === "Normal Priority"){
+            return el
+        }
+    })
+
+    mainSection.replaceChildren();
+
+    let normalPriorityList = document.createElement('ul');
+    normalPriorityList.classList.add('normal-priority-list');
+    mainSection.appendChild(normalPriorityList);
+    
+    newTodoBtn.classList.add('hidden-btn');
+
+    createList(normalPriorityTasks, normalPriorityList);
+};
+
+
+// high priority button function
+
+function highPriorityBtnFunction(){
+    let highPriorityTasks = list.filter(function(el){
+        if (el.priority === "High Priority"){
+            return el
+        }
+    })
+
+    mainSection.replaceChildren();
+
+    let highPriorityList = document.createElement('ul');
+    highPriorityList.classList.add('high-priority-list');
+    mainSection.appendChild(highPriorityList);
+    
+    newTodoBtn.classList.add('hidden-btn');
+
+    createList(highPriorityTasks, highPriorityList);
+};
+
+// all button function
+
+
+function allBtnFunction (){
+    mainSection.replaceChildren();
+
+    let allBtnPriorityList = document.createElement('ul');
+    allBtnPriorityList.classList.add('all-btn-priority-list');
+    mainSection.appendChild(allBtnPriorityList);
+    newTodoBtn.classList.remove('hidden-btn');
+    
+    createList(list, allBtnPriorityList);
 }
